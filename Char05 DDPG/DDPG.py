@@ -63,7 +63,7 @@ class Actor(nn.Module):
         self.l2 = nn.Linear(256, 256)
         self.l3 = nn.Linear(256, action_dim)
 
-        self.l3.weight.data.uniform_(init_w, init_w)
+        self.l3.weight.data.uniform_(-init_w, init_w)
         self.l3.bias.data.uniform_(-init_w, init_w)
 
     def forward(self, state):

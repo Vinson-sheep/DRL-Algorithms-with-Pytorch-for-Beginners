@@ -66,7 +66,7 @@ class Actor(nn.Module):
         self.l2 = nn.Linear(256, 256)
 
         self.mu_head = nn.Linear(256, action_dim)
-        self.mu_head.weight.data.uniform_(init_w, init_w)
+        self.mu_head.weight.data.uniform_(-init_w, init_w)
         self.mu_head.bias.data.uniform_(-init_w, init_w)
 
         self.log_std_head = nn.Linear(256, action_dim)
@@ -210,7 +210,7 @@ class SAC:
 
         state = torch.tensor(state, dtype=torch.float).to(device)
         action = torch.tensor(action, dtype=torch.float).to(device)
-        reward = torch.tensor(reward, dtype=torch.float).view(batch_size, -1).to(device)
+        reward = torch.tensor(reward, dtype=torch.float).view(batch_size, 1).to(device)
         next_state = torch.tensor(next_state, dtype=torch.float).to(device)
         done = torch.tensor(done, dtype=torch.float).to(device).view(batch_size, -1).to(device)
 

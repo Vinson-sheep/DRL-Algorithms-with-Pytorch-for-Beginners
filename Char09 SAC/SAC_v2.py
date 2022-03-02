@@ -66,7 +66,7 @@ class Actor(nn.Module):
         self.l2 = nn.Linear(256, 256)
 
         self.mu_head = nn.Linear(256, action_dim)
-        self.mu_head.weight.data.uniform_(init_w, init_w)
+        self.mu_head.weight.data.uniform_(-init_w, init_w)
         self.mu_head.bias.data.uniform_(-init_w, init_w)
 
         self.log_std_head = nn.Linear(256, action_dim)
