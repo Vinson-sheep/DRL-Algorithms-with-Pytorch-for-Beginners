@@ -213,7 +213,7 @@ class SAC:
 
         if self.num_training % actor_update_frequency == 0:
 
-            alpha_loss = -(self.log_alpha * (log_prob + self.target_entropy).detach()).mean()
+            alpha_loss = -(self.alpha * (log_prob + self.target_entropy).detach()).mean()
             self.writer.add_scalar('Loss/alpha_loss', alpha_loss, global_step=self.num_training)
             self.writer.add_scalar('Loss/alpha', self.alpha, global_step=self.num_training)
 
@@ -224,7 +224,8 @@ class SAC:
         # Q_net
 
         target_Q1, target_Q2 = self.Q_net_target(next_state, new_next_action)
-        target_Q = reward + (1 - done) * discount * torch.min(target_Q1, target_Q2)
+        target_V = torch.min(target_Q1, target_Q2) - self.alpha.detach()*next_log_prob
+        target_Q = reward + (1 - done) * discount * target_V
         Q_net_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q)
         self.writer.add_scalar('Loss/Q_loss', Q_net_loss, global_step=self.num_training)
 
